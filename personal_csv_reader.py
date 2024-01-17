@@ -21,6 +21,8 @@ def main():
     data.sort(key=itemgetter(0, 1))
     display_data(data)
     save_data(data, filename)
+    print(f"{len(data)} entries recorded.")
+    print("Done!")
 
 
 def load_data(filename):
