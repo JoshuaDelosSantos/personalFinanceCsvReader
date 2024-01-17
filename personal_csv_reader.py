@@ -20,7 +20,7 @@ def main():
     data = load_data(filename)
     data.sort(key=itemgetter(0, 1))
     display_data(data)
-    # save_data(data)
+    save_data(data, filename)
 
 
 def load_data(filename):
@@ -52,8 +52,17 @@ def load_data(filename):
     return data
 
 
-def save_data(data):
-    pass
+def save_data(data, filename):
+    """Save data to file."""
+    with open(f"modified_{filename}", 'w') as out_file:
+
+        print(",".join([header for header in CUSTOM_HEADERS]), file=out_file)
+
+        for datum in data:
+            date = datum[0].date().strftime('%d/%m/%Y')
+            debited = str(datum[2])
+            credited = str(datum[3])
+            print(f"{date},{datum[1]},{debited},{credited}", file=out_file)
 
 
 def display_data(data):
@@ -88,7 +97,7 @@ def get_valid_filename():
         except Exception as e:
             print(f"An error occurred: {e}")
 
-    return full_path
+    return filename
 
 
 if __name__ == '__main__':
