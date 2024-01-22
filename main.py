@@ -15,26 +15,12 @@ from line import Line
 CUSTOM_HEADERS = ['Date', 'Description', 'Debited', 'Credited', 'Category']
 
 
-# CATEGORY_TO_TEXTS = {
-#     'Grocery': ['WOOLWORTHS', 'COLES'],
-#     'Travel': ['AIRBNB', 'HOTEL', 'GRAB', 'FOREIGN FEE'],
-#     'Dining': ['RESTAURANT', 'CAFE', 'FOOD', 'EATERY', 'MCDONALDS', 'SUSHI'],
-#     'Shopping': ['KMART', 'SHOP', 'CLOTHING', 'RETAIL', 'MARKET'],
-#     'Utilities': ['BILL', 'OPTUS', 'TELSTRA'],
-#     'Salary': ['SALARY', 'PAYROLL', 'PAYMENT', 'DEPOSIT'],
-#     'Entertainment': ['NETFLIX', 'SPOTIFY', 'STREAMING', 'MOVIE'],
-#     'Health and Fitness': ['GYM', 'FITNESS', 'WORKOUT'],
-#     'Transfer': ['TRANSFER', 'TFR', 'PAYMENT TO'],
-#     'Other': ['PAYMENT BY AUTHORITY', 'WITHDRAWAL ONLINE', 'DEPOSIT-OSKO PAYMENT', 'WITHDRAWAL-OSKO PAYMENT']
-# }
-
-
 def main():
     filename = get_valid_filename()
     data = load_data(filename)
     data.sort(key=attrgetter('date', 'description'))
     display_data(data)
-    # save_data(data, filename)
+    save_data(data, filename)
     print(f"{len(data)} entries recorded.")
     print("Done!")
 
@@ -72,12 +58,9 @@ def save_data(data, filename):
     with open(f"modified_{filename}", 'w') as out_file:
         print(",".join([header for header in CUSTOM_HEADERS]), file=out_file)
 
-        for datum in data:
-            date = datum[0].date().strftime('%d/%m/%Y')
-            debited = str(datum[2])
-            credited = str(datum[3])
-            category = determine_category(datum[1])
-            print(f"{date},{datum[1]},{debited},{credited},{category}", file=out_file)
+        for line in data:
+            print(f"{line.date.date()},{line.description},{line.debited},{line.credited},{line.determine_category()}",
+                  file=out_file)
 
 
 def display_data(data):
